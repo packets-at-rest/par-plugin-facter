@@ -1,5 +1,15 @@
 # par-plugin-facter
-Packets-at-REST plugin for facter gem
+
+
+[![GitHub release](https://img.shields.io/github/tag/packets-at-rest/par-plugin-facter.svg)](https://github.com/packets-at-rest/par-plugin-facter)
+
+Packets-at-REST plugin for `facter` gem
+
+## Build Status
+
+[![Build Status](https://travis-ci.org/packets-at-rest/par-plugin-facter.svg)](https://travis-ci.org/packets-at-rest/par-plugin-facter)
+[![Dependency Status](https://gemnasium.com/packets-at-rest/par-plugin-facter.svg)](https://gemnasium.com/packets-at-rest/par-plugin-facter)
+
 
 ## PAR API extension
 
