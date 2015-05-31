@@ -1,5 +1,7 @@
-require 'lib/plugin'
-require 'lib/version'
+$:.unshift File.expand_path(".", __FILE__)
+
+require_relative './lib/plugin'
+require_relative './lib/version'
 # PacketsAtRest.logger.info 'Starting Example plugin for PacketsAtRest'
 
 PacketsAtRest::Plugin.register :par_plugin_facter do
@@ -14,10 +16,6 @@ PacketsAtRest::Plugin.register :par_plugin_facter do
   version '0.0.1'
 
   version PacketsAtRest::ParPluginFacter::VERSION
-#  tags [:system_heath, :ruby_gem, :api_extension]
-
-# Do stuff..
-  run PacketsAtRest::ParPluginFacter::Plugin
 
 end
 
