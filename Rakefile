@@ -17,3 +17,9 @@ Rake::TestTask.new do |t|
   t.test_files = FileList['test/test*.rb']
   t.verbose = true
 end
+
+desc "release TAG #{PacketsAtRest::ParPluginFacter::VERSION} to github"
+task :release do
+    system("git tag -a #{PacketsAtRest::ParPluginFacter::VERSION} -m 'release tag #{PacketsAtRest::VERSION}'")
+    system("git push origin #{PacketsAtRest::ParPluginFacter::VERSION}")
+end

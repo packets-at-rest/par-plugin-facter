@@ -12,4 +12,5 @@ group :test do
     gem 'bump', '~> 0.3', require: nil
     gem 'rake', require: nil
     gem 'rack-test', require: nil
+    gem "minitest-reporters", require: nil
 end
