@@ -1,7 +1,12 @@
 source 'https://rubygems.org'
+gem 'json', '~> 1.8.2'
 gem 'rack', '~> 1.6.0'
 gem 'sinatra', '~> 1.4.5'
-gem 'json', '~> 1.8.2'
+
+gem "sinatra-param", require: "sinatra/param"
+gem 'sinatra-strong-params', :require => 'sinatra/strong-params'
+gem 'warden'
+
 gem 'facter'
 
 group :debug do

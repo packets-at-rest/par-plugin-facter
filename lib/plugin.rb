@@ -1,9 +1,14 @@
-require 'sinatra/base'
+require_relative './plugin_base'
 
 module PacketsAtRest
     module ParPluginFacter
-        class Plugin < Sinatra::Base
+        class Plugin < PluginBase
+
             get '/facter' do
+                if PacketsAtRest::ROLE == :collector
+                   env['warden'].authenticate!(:node_access_token)
+                end
+
                 content_type :json
                 begin
                     return `facter -j`
@@ -12,36 +17,31 @@ module PacketsAtRest
                 end
             end
 
-            def error_message msg
-              {
-                "error" => msg
-              }.to_json
-            end
+            if PacketsAtRest::ROLE == :collector
+                get '/nodes/:node_id/facter', allows: [:api_key, :node_id, :command] do
 
-            def notfound msg
-              content_type :json
-              [404, error_message(msg)]
-            end
+                  param :api_key,             String, format: /^[a-zA-Z0-9\-]+$/, required: true
+                  param :node_id,             Integer, transform: :to_s, required: true
 
-            def badrequest msg
-              content_type :json
-              [400, error_message(msg)]
-            end
+                  content_type :json
 
-            def unauthorized msg
-              content_type :json
-              [401, error_message(msg)]
-            end
+                  env['warden'].authenticate!(:node_access_token)
+                  return forbidden 'api_key not allowed to request this resource' unless @collector.authorized_nodes(params['api_key']).include?(params['node_id'])
+                  return badrequest 'unknown node' unless @collector.valid_node? params['node_id']
 
-            def forbidden msg
-              content_type :json
-              [403, error_message(msg)]
-            end
+                  begin
+                    node_address = @collector.lookup_nodeaddress_by_id(params['node_id'])
 
-            def internalerror msg
-              content_type :json
-              [500, error_message(msg)]
-            end
+                    uri = URI.encode("http://#{node_address}/facter")
+                    RestClient.get(uri) do |response, request, result|
+                      [response.code, response.body]
+                    end
+                  rescue
+                    return internalerror 'there was a problem requesting from the node'
+                  end
+                end
+            end    
+
         end
     end
 end
