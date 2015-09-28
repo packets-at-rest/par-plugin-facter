@@ -14,8 +14,8 @@ group :debug do
 end
 
 group :test do
+    gem 'rake', '~> 10.4.2' , :require => nil
     gem 'bump', '~> 0.3', require: nil
-    gem 'rake', require: nil
     gem 'rack-test', require: nil
     gem "minitest-reporters", require: nil
 end
